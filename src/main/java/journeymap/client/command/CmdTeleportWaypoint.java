@@ -73,7 +73,13 @@ public class CmdTeleportWaypoint
     }
 
     public void run()
-    {
-        mc.thePlayer.sendChatMessage(String.format("/tp %s %s %s %s", ForgeHelper.INSTANCE.getEntityName(mc.thePlayer), waypoint.getX(), waypoint.getY(), waypoint.getZ()));
+     {
+        String key = "/tp %s %s %s %s";
+        if (Minecraft.getMinecraft().thePlayer != null && FMLClientHandler.instance() != null && !Minecraft.getMinecraft().isSingleplayer())
+        {
+            key = "/tppos %s %s %s";
+            mc.thePlayer.sendChatMessage(String.format(key, waypoint.getX(), waypoint.getY(), waypoint.getZ()));
+        } else
+            mc.thePlayer.sendChatMessage(String.format(key, ForgeHelper.INSTANCE.getEntityName(mc.thePlayer), waypoint.getX(), waypoint.getY(), waypoint.getZ()));
     }
 }
