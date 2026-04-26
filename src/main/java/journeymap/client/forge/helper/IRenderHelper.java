@@ -19,7 +19,13 @@ public interface IRenderHelper
 
     public void addVertexWithUV(double x, double y, double z, double u, double v);
 
+    /**
+     * @deprecated don't use arrays for colors
+     */
+    @Deprecated
     public void addVertexWithUV(double x, double y, double z, double u, double v, int[] rgba);
+
+    public void addVertexWithUV(double x, double y, double z, double u, double v, int rgba);
 
     public void draw();
 

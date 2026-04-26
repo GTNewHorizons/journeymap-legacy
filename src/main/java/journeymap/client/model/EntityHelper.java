@@ -273,8 +273,8 @@ public class EntityHelper
         public int compare(EntityDTO o1, EntityDTO o2)
         {
 
-            Integer o1rank = 0;
-            Integer o2rank = 0;
+            int o1rank = 0;
+            int o2rank = 0;
 
             if (o1.customName != null)
             {
@@ -300,7 +300,7 @@ public class EntityHelper
                 }
             }
 
-            return o1rank.compareTo(o2rank);
+            return Integer.compare(o1rank, o2rank);
         }
 
     }
