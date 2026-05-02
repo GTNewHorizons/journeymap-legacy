@@ -8,6 +8,7 @@ package journeymap.client.data;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheLoader;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.Loader;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import journeymap.client.Constants;
@@ -30,7 +31,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.logging.log4j.Level;
-import org.lwjgl.opengl.Display;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -364,7 +364,7 @@ public class WorldData extends CacheLoader<Class, WorldData>
         mod_name = JourneymapClient.MOD_NAME;
         jm_version = Journeymap.JM_VERSION.toString();
         latest_journeymap_version = VersionCheck.getVersionAvailable();
-        mc_version = Display.getTitle().split("\\s(?=\\d)")[1];
+        mc_version = Loader.MC_VERSION;
         browser_poll = Math.max(1000, JourneymapClient.getCoreProperties().browserPoll.get());
 
         iconSetName = JourneymapClient.getFullMapProperties().getEntityIconSetName().get();
