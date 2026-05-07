@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
 
 public final class JourneymapTransformer implements IClassTransformer
 {
@@ -31,12 +32,16 @@ public final class JourneymapTransformer implements IClassTransformer
         cr.accept(cn, 0);
 
         boolean changed = false;
+        boolean changedTwo = false;
+        boolean changedThree = false;
 
         final boolean obf = JourneymapPlugin.isObf();
         final String CLICK_METHOD_NAME = obf ? "a" : "confirmClicked";
         final String CLICK_METHOD_DESC = "(ZI)V";
 
-        outerloop:
+        final String PROMPT_METHOD_NAME = obf ? "a" : "func_152129_a";
+        final String PROMPT_METHOD_DESC = obf ? "(Lbcv;Ljava/lang/String;I)Lbcw;" : "(Lnet/minecraft/client/gui/GuiYesNoCallback;Ljava/lang/String;I)Lnet/minecraft/client/gui/GuiYesNo;";
+
         for (MethodNode mn : cn.methods)
         {
             if (CLICK_METHOD_NAME.equals(mn.name) && CLICK_METHOD_DESC.equals(mn.desc))
@@ -61,14 +66,42 @@ public final class JourneymapTransformer implements IClassTransformer
                                             "(Ljava/lang/String;)Ljava/lang/String;",
                                             false));
                             changed = true;
-                            break outerloop;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (PROMPT_METHOD_NAME.equals(mn.name) && PROMPT_METHOD_DESC.equals(mn.desc))
+            {
+                final String OLD_GUI_YN = obf ? "bcw" : "net/minecraft/client/gui/GuiYesNo";
+                final String NEW_GUI_YN = "journeymap/client/ui/dialog/GuiYesNoJMPrompt";
+
+                for (AbstractInsnNode node : mn.instructions.toArray())
+                {
+                    if (node instanceof MethodInsnNode)
+                    {
+                        final MethodInsnNode mNode = (MethodInsnNode) node;
+                        if (OLD_GUI_YN.equals(mNode.owner))
+                        {
+                            mNode.owner = NEW_GUI_YN;
+                            changedTwo = true;
+                        }
+                    }
+                    else if (node instanceof TypeInsnNode)
+                    {
+                        final TypeInsnNode tNode = (TypeInsnNode) node;
+                        if (OLD_GUI_YN.equals(tNode.desc))
+                        {
+                            tNode.desc = NEW_GUI_YN;
+                            changedThree = true;
                         }
                     }
                 }
             }
         }
 
-        if (changed)
+        if (changed && changedTwo && changedThree)
         {
             final ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
             cn.accept(cw);
