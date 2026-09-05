@@ -20,21 +20,14 @@ import java.util.List;
  */
 class DimensionsButton extends Button
 {
-    static boolean needInit = true;
-    static WorldProvider currentWorldProvider;
+    WorldProvider currentWorldProvider;
     final List<WorldProvider> worldProviders = WorldData.getDimensionProviders(WaypointStore.instance().getLoadedDimensions());
 
     public DimensionsButton()
     {
         super(0, 0, "");
-
-        if (needInit || currentWorldProvider != null)
-        {
-            currentWorldProvider = ForgeHelper.INSTANCE.getClient().thePlayer.worldObj.provider;
-            needInit = false;
-        }
+        currentWorldProvider = ForgeHelper.INSTANCE.getClient().thePlayer.worldObj.provider;
         updateLabel();
-
         // Determine width
         fitWidth(ForgeHelper.INSTANCE.getFontRenderer());
     }
