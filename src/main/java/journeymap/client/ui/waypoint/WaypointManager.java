@@ -573,7 +573,7 @@ public class WaypointManager extends JmUI
     protected void updateItems()
     {
         items.clear();
-        Integer currentDim = buttonDimensions == null ? null : buttonDimensions.currentWorldProvider == null ? null : ForgeHelper.INSTANCE.getDimension(buttonDimensions.currentWorldProvider);
+        Integer currentDim = buttonDimensions == null ? null : buttonDimensions.getCurrentWorldProvider() == null ? null : ForgeHelper.INSTANCE.getDimension(buttonDimensions.getCurrentWorldProvider());
         FontRenderer fr = getFontRenderer();
         itemWidth = 0;
 
