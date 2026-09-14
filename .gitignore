@@ -40,3 +40,4 @@ out/
 journeymap.iml
 journeymap.ipr
 journeymap.iws
+*.bat
